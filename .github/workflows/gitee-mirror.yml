@@ -1,4 +1,4 @@
-name: Gitee Mirror
+﻿name: Gitee Mirror
 
 # Mirrors github.com/vnotex/vnote to gitee.com/vnotex/vnote:
 #   * Job A (sync-code)     - pushes master + release tags on every push to master.
@@ -26,12 +26,10 @@ name: Gitee Mirror
 # release. See the job guards below.
 #
 # Credentials live in the `GiteeMirror` repository environment as the secrets
-# GITEE_USERNAME (the Gitee account login/path) and GITEE_TOKEN (a 私人令牌 with
+# GITEE_USERNAME (the Gitee account login/path) and GITEE_TOKEN (a 绉佷汉浠ょ墝 with
 # the `projects` scope). Both jobs must declare `environment:` to see them.
 
-on:
-  push:
-    branches: [ master ]
+on: [workflow_dispatch]
   release:
     types: [ published ]
   workflow_dispatch:

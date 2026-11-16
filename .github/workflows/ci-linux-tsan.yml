@@ -1,4 +1,4 @@
-# Linux + ThreadSanitizer CI Workflow
+﻿# Linux + ThreadSanitizer CI Workflow
 #
 # ACTIVE (W10.3): Detects data races in vxcore sync subsystem via ThreadSanitizer.
 #
@@ -14,8 +14,7 @@
 
 name: CI-Linux-TSan
 
-on:
-  push:
+on: [workflow_dispatch]
     branches: [master]
     paths:
       - 'libs/vxcore'

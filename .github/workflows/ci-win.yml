@@ -64,6 +64,11 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
+      - name: Apply m3 compact collapse patch
+        shell: bash
+        run: |
+          git -C libs/m3 apply ../../patches/m3_compact_collapse.patch
+
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v4

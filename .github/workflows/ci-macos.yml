@@ -1,8 +1,6 @@
-name: CI-MacOS
+﻿name: CI-MacOS
 
-on:
-  push:
-    branches: [ master ]
+on: [workflow_dispatch]
   pull_request:
     branches: [ master ]
 

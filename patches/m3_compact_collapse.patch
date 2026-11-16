@@ -1,0 +1,34 @@
+diff --git a/src/qt/mindmap_controller.cpp b/src/qt/mindmap_controller.cpp
+index bcee76c..6eb345c 100644
+--- a/src/qt/mindmap_controller.cpp
++++ b/src/qt/mindmap_controller.cpp
+@@ -795,9 +795,11 @@ Presentation MindMapController::prepare(const QByteArray &json,
+         const size_t position = sizes.size();
+         sizes.push_back({frame.parent, node.rectangle.width(), node.rectangle.height()});
+         // Preorder follows declared children, not the flat JSON record order.
+-        for (auto it = children.rbegin(); it != children.rend(); ++it)
+-            pending.push_back({index.at(it->get<std::string>()), node.style.branchColor,
+-                               position, result.nodes.size(), frame.level + 1, frame.visible && node.expanded});
++        if (frame.visible && node.expanded) {
++            for (auto it = children.rbegin(); it != children.rend(); ++it)
++                pending.push_back({index.at(it->get<std::string>()), node.style.branchColor,
++                                   position, result.nodes.size(), frame.level + 1, true});
++        }
+         if (frame.visible) {
+             if (frame.visibleParent != M3_NO_PARENT)
+                 result.treeEdges.push_back({result.nodes[frame.visibleParent].id, node.id});
+@@ -817,7 +819,13 @@ Presentation MindMapController::prepare(const QByteArray &json,
+         const auto &rect = layout->rects[visibleIndexes[i]];
+         node.rectangle = QRectF(rect.x, rect.y, rect.width, rect.height);
+         // Full preorder retains the first direct child even while this node is folded.
+-        if (node.hasChildren) node.childrenOnLeft = layout->rects[visibleIndexes[i] + 1].x < rect.x;
++        if (node.hasChildren) {
++            if (node.expanded && visibleIndexes[i] + 1 < layout->count) {
++                node.childrenOnLeft = layout->rects[visibleIndexes[i] + 1].x < rect.x;
++            } else if (layout->count > 0) {
++                node.childrenOnLeft = rect.x < layout->rects[0].x;
++            }
++        }
+         result.bounds = result.bounds.united(node.rectangle);
+         visible.insert(node.id);
+     }
